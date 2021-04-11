@@ -21,10 +21,12 @@ player_img = pygame.transform.scale(pygame.image.load("images/player.png"),(35,3
 wall_h =  pygame.transform.scale(pygame.image.load("images/wall_h.png"),(64, 32))
 wall_v =  pygame.transform.scale(pygame.image.load("images/wall_v.png"),(32,64))
 enemy_img = pygame.transform.scale(pygame.image.load("images/enemy.png"),(36,50))
+coin_img = pygame.transform.scale(pygame.image.load("images/coin.png"),(36,36))
 # создание групп объектов
 all_sprites = pygame.sprite.Group()
 walls = pygame.sprite.Group()
-
+items = pygame.sprite.Group()
+enimies = pygame.sprite.Group()
 #создание объектов 
 player = Object(player_img,start_x,start_y,1)
 all_sprites.add(player)
@@ -76,16 +78,43 @@ walls.add(wall1,wall2,wall3,wall4,wall5,wall6,wall7,wall8,wall9,wall10,wall11,wa
 all_sprites.add(wall1,wall2,wall3,wall4,wall5,wall6,wall7,wall8,wall9,wall10,wall11,wall12,wall13,wall14,wall15,wall16,wall17,wall18,wall19,wall20,wall21,wall22,wall23,wall24,wall25,wall26,wall27,wall28,wall29,wall30,wall31,wall32,wall33,wall34,wall35,wall36,wall37)
 
 # создание противников
-enimies = pygame.sprite.Group()
+
 enemy1_x = 390
 enemy1_y = 500
 enemy1 = Object(enemy_img, enemy1_x,enemy1_y,1)
 enimies.add(enemy1)
 all_sprites.add(enemy1)
 
+coin1_x = 130
+coin1_y = 240
+coin1 = Object(coin_img,coin1_x,coin1_y,0)
+items.add(coin1)
+all_sprites.add(coin1)
+
+
+coin2_x = 135
+coin2_y = 240
+coin2= Object(coin_img,coin2_x,coin2_y,0)
+items.add(coin2)
+all_sprites.add(coin2)
+
+coin4_x = 120
+coin4_y = 240
+coin4 = Object(coin_img,coin4_x,coin4_y,0)
+items.add(coin4)
+all_sprites.add(coin4)
+
+coin3_x = 230
+coin3_y = 240
+coin3 = Object(coin_img,coin3_x,coin3_y,0)
+items.add(coin3)
+all_sprites.add(coin3)
+
 
 
 run = True
+
+points = 0
 
 while run:
     window.blit(bg, (0,0))
@@ -116,6 +145,10 @@ while run:
     if len(pygame.sprite.spritecollide(enemy1,walls,False)) > 0:
         enemy1.speed *= -1
 
+    # get points
+    if len(pygame.sprite.spritecollide(player,items,True)) > 0:
+        points += 1
+        print(points)
 
     all_sprites.draw(window)
     all_sprites.update()
