@@ -1,4 +1,9 @@
 import pygame
+pygame.init()
+import pygame.mixer
+from tkinter import*
+from tkinter import messagebox as mb
+
 
 window = pygame.display.set_mode((800,600))
 pygame.display.set_caption("NIggERS")
@@ -11,6 +16,9 @@ class Object(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.speed = speed
+
+#creat hide Tk window
+Tk().wm_withdraw()
 
 # точка спавна игрока
 start_x = 80
@@ -74,6 +82,7 @@ wall37 = Object(wall_h,0,0,0)
 
 
 
+
 walls.add(wall1,wall2,wall3,wall4,wall5,wall6,wall7,wall8,wall9,wall10,wall11,wall12,wall13,wall14,wall15,wall16,wall17,wall18,wall19,wall20,wall21,wall22,wall23,wall24,wall25,wall26,wall27,wall28,wall29,wall30,wall31,wall32,wall33,wall34,wall35,wall36,wall37)
 all_sprites.add(wall1,wall2,wall3,wall4,wall5,wall6,wall7,wall8,wall9,wall10,wall11,wall12,wall13,wall14,wall15,wall16,wall17,wall18,wall19,wall20,wall21,wall22,wall23,wall24,wall25,wall26,wall27,wall28,wall29,wall30,wall31,wall32,wall33,wall34,wall35,wall36,wall37)
 
@@ -110,13 +119,25 @@ coin3 = Object(coin_img,coin3_x,coin3_y,0)
 items.add(coin3)
 all_sprites.add(coin3)
 
+#text
+coins_font = pygame.font.Font(None,35)
+coins_text = coins_font.render("Монеты: 0", True , pygame.Color("red"))
 
+#music
+pygame.mixer.music.load('sound/bg.mp3 ')
+pygame.mixer.music.play()
+pygame.mixer.music.set_volume(1)
 
 run = True
-
 points = 0
 
 while run:
+
+    if points == 3:
+        mb.showinfo("Информация","Вы выиграли!")
+        run = False
+
+
     window.blit(bg, (0,0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -148,8 +169,10 @@ while run:
     # get points
     if len(pygame.sprite.spritecollide(player,items,True)) > 0:
         points += 1
-        print(points)
-
+        coins_text = coins_font.render((("Монеты: " + str(points))), True, pygame.Color("red"))
+        
     all_sprites.draw(window)
     all_sprites.update()
+    window.blit(coins_text,(370,480))
+
     pygame.display.update()
